@@ -1,0 +1,31 @@
+name: CI Pipeline
+
+# Trigger the pipeline on push to the main branch
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Check out the code from GitHub
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    # 2. Setup Node.js environment
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    # 3. Install Dependencies
+    - name: Install Dependencies
+      run: npm ci
+
+    # 4. Build Docker Image (Test if Dockerfile is valid)
+    - name: Build Docker Image
+      run: docker build . --file Dockerfile --tag cloud-resource-tracker:test

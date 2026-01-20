@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: cloud_tracker_app
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/cloudtracker
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+    networks:
+      - backend_network
+    restart: on-failure
+
+  mongodb:
+    image: mongo:6.0
+    container_name: cloud_tracker_db
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - backend_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: cloud_tracker_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
+    driver: bridge
+
+volumes:
+  mongo_data:
