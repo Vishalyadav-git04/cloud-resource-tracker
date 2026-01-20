@@ -6,10 +6,7 @@ services:
     container_name: cloud_tracker_app
     env_file:
       - .env
-    environment:
-      - MONGO_URI=${MONGO_URI}
-      - PORT=3000
-      - NODE_ENV=production
+  
     depends_on:
       - mongodb
     networks:
