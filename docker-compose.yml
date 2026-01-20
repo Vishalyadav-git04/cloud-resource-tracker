@@ -5,8 +5,7 @@ services:
     build: .
     container_name: cloud_tracker_app
     environment:
-      - MONGO_URI=mongodb://mongodb:27017/cloudtracker
-      - NODE_ENV=production
+      - .env
     depends_on:
       - mongodb
     networks:
